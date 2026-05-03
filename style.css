@@ -7,8 +7,20 @@
     --card-bg-color: #2a2a2a;
     --shadow-color: rgba(0, 0, 0, 0.5);
     --glow-color: rgba(255, 64, 129, 0.8);
+    --history-item-bg: #333;
 
     --font-main: 'Poppins', sans-serif;
+}
+
+body.light-mode {
+    --bg-color: #f0f2f5;
+    --text-color: #1a1a1a;
+    --primary-color: #d81b60;
+    --secondary-color: #6200ea;
+    --card-bg-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --glow-color: rgba(216, 27, 96, 0.3);
+    --history-item-bg: #e4e6eb;
 }
 
 body {
@@ -19,6 +31,7 @@ body {
     place-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
@@ -30,6 +43,31 @@ body {
     max-width: 500px;
     box-shadow: 0 10px 30px var(--shadow-color);
     text-align: center;
+    position: relative;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+    background-color: var(--secondary-color);
+    color: white;
 }
 
 header h1 {
@@ -38,6 +76,7 @@ header h1 {
     font-size: 2.5rem;
     letter-spacing: 2px;
     text-shadow: 0 0 10px var(--glow-color);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .lotto-display {
@@ -74,6 +113,7 @@ header h1 {
     border-bottom: 2px solid var(--secondary-color);
     padding-bottom: 0.5rem;
     display: inline-block;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 #history-list {
@@ -83,11 +123,12 @@ header h1 {
 }
 
 #history-list li {
-    background-color: #333;
+    background-color: var(--history-item-bg);
     padding: 0.8rem;
     border-radius: 10px;
     margin-bottom: 0.5rem;
     display: flex;
     justify-content: space-around;
     font-size: 1.1rem;
+    transition: background-color 0.3s ease;
 }

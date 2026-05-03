@@ -39,13 +39,29 @@ class LottoBall extends HTMLElement {
 }
 customElements.define('lotto-ball', LottoBall);
 
+// ... (LottoBall class remains the same)
+
 const generateBtn = document.getElementById('generate-btn');
 const lottoDisplay = document.querySelector('.lotto-display');
 const historyList = document.getElementById('history-list');
+const themeToggle = document.getElementById('theme-toggle');
+
+// Theme Logic
+const currentTheme = localStorage.getItem('theme') || 'dark';
+if (currentTheme === 'light') {
+    document.body.classList.add('light-mode');
+}
+
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+    localStorage.setItem('theme', theme);
+});
 
 const history = [];
 
 generateBtn.addEventListener('click', () => {
+// ... (rest of the generate logic remains the same)
   const numbers = new Set();
   while (numbers.size < 6) {
     const randomNum = Math.floor(Math.random() * 45) + 1;
