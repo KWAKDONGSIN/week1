@@ -39,8 +39,6 @@ class LottoBall extends HTMLElement {
 }
 customElements.define('lotto-ball', LottoBall);
 
-// ... (LottoBall class remains the same)
-
 const generateBtn = document.getElementById('generate-btn');
 const lottoDisplay = document.querySelector('.lotto-display');
 const historyList = document.getElementById('history-list');
@@ -61,7 +59,6 @@ themeToggle.addEventListener('click', () => {
 const history = [];
 
 generateBtn.addEventListener('click', () => {
-// ... (rest of the generate logic remains the same)
   const numbers = new Set();
   while (numbers.size < 6) {
     const randomNum = Math.floor(Math.random() * 45) + 1;
@@ -93,3 +90,39 @@ function updateHistoryView() {
         historyList.appendChild(li);
     });
 }
+
+// Contact form
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전송 중...';
+    formStatus.textContent = '';
+    formStatus.className = 'form-status';
+
+    try {
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { Accept: 'application/json' },
+        });
+
+        if (response.ok) {
+            formStatus.textContent = '문의가 성공적으로 전송되었습니다. 감사합니다!';
+            formStatus.classList.add('success');
+            contactForm.reset();
+        } else {
+            formStatus.textContent = '전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+            formStatus.classList.add('error');
+        }
+    } catch {
+        formStatus.textContent = '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+        formStatus.classList.add('error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '문의 보내기';
+    }
+});
