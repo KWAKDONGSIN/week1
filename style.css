@@ -215,3 +215,24 @@ header h1 {
 .form-status.error {
     color: var(--primary-color);
 }
+
+.comments {
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.comments h2 {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+#disqus_thread {
+    background-color: var(--history-item-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: background-color 0.3s ease;
+}
