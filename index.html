@@ -39,27 +39,15 @@
             <h2>🐶 동물상 테스트 🐱</h2>
             <p class="animal-subtitle">나는 강아지상? 고양이상? AI가 분석해드립니다</p>
 
-            <div id="at-upload-section">
-                <label class="at-upload-area" id="at-drop-zone">
-                    <input type="file" id="at-file-input" accept="image/*">
-                    <span class="at-upload-icon">📷</span>
-                    <span>사진을 클릭하거나 드래그해서 업로드</span>
-                </label>
-                <div class="at-divider">또는</div>
-                <button class="submit-btn" id="at-webcam-btn" style="width:100%">📹 웹캠으로 테스트하기</button>
-            </div>
+            <label class="at-upload-area" id="at-drop-zone">
+                <input type="file" id="at-file-input" accept="image/*">
+                <span class="at-upload-icon">📷</span>
+                <span>사진을 클릭하거나 드래그해서 업로드</span>
+            </label>
 
             <div id="at-preview-area" style="display:none">
                 <img id="at-preview-img" src="" alt="미리보기">
                 <button class="submit-btn" id="at-analyze-btn" style="margin-top:0.8rem">🔍 분석하기</button>
-            </div>
-
-            <div id="at-webcam-area" style="display:none">
-                <div id="at-webcam-container"></div>
-                <div style="display:flex;gap:0.6rem;margin-top:0.8rem">
-                    <button class="submit-btn" id="at-capture-btn" style="flex:1">📸 지금 분석하기</button>
-                    <button class="submit-btn" id="at-stop-btn" style="flex:1;background:var(--history-item-bg);box-shadow:none;color:var(--text-color)">✕ 닫기</button>
-                </div>
             </div>
 
             <div id="at-loading" style="display:none;text-align:center;padding:1.2rem 0">
@@ -126,7 +114,7 @@
             "고양이": { emoji: "🐱", label: "고양이상", desc: "신비롭고 도도한 매력! 눈매가 날카롭고 세련된 인상으로 알수록 매력이 넘치는 타입입니다." }
         };
 
-        let atModel, atWebcam, atWebcamRunning = false, atUploadedImg = null;
+        let atModel, atUploadedImg = null;
 
         function atGetInfo(className) {
             for (const [k, v] of Object.entries(AT_INFO)) {
@@ -176,18 +164,15 @@
 
             document.getElementById("at-result").style.display = "block";
             document.getElementById("at-preview-area").style.display = "none";
-            document.getElementById("at-webcam-area").style.display = "none";
             requestAnimationFrame(() => {
                 bars.querySelectorAll("[data-pct]").forEach(el => el.style.width = el.dataset.pct + "%");
             });
         }
 
         function atReset() {
-            if (atWebcam && atWebcamRunning) { atWebcamRunning = false; atWebcam.stop(); }
-            atWebcam = null; atUploadedImg = null;
-            document.getElementById("at-upload-section").style.display = "block";
+            atUploadedImg = null;
+            document.getElementById("at-drop-zone").style.display = "flex";
             document.getElementById("at-preview-area").style.display = "none";
-            document.getElementById("at-webcam-area").style.display = "none";
             document.getElementById("at-result").style.display = "none";
             document.getElementById("at-preview-img").src = "";
             document.getElementById("at-file-input").value = "";
@@ -201,7 +186,7 @@
                 const img = document.getElementById("at-preview-img");
                 img.src = ev.target.result;
                 img.onload = () => { atUploadedImg = img; };
-                document.getElementById("at-upload-section").style.display = "none";
+                document.getElementById("at-drop-zone").style.display = "none";
                 document.getElementById("at-preview-area").style.display = "block";
                 document.getElementById("at-result").style.display = "none";
             };
@@ -221,34 +206,6 @@
         });
 
         document.getElementById("at-analyze-btn").addEventListener("click", () => { if (atUploadedImg) atAnalyze(atUploadedImg); });
-
-        document.getElementById("at-webcam-btn").addEventListener("click", async () => {
-            document.getElementById("at-upload-section").style.display = "none";
-            document.getElementById("at-webcam-area").style.display = "block";
-            document.getElementById("at-loading").style.display = "block";
-            try {
-                await atLoadModel();
-                atWebcam = new tmImage.Webcam(440, 300, true);
-                await atWebcam.setup();
-                await atWebcam.play();
-                atWebcamRunning = true;
-                const c = document.getElementById("at-webcam-container");
-                c.innerHTML = "";
-                c.appendChild(atWebcam.canvas);
-                (function loop() { if (!atWebcamRunning) return; atWebcam.update(); requestAnimationFrame(loop); })();
-            } catch(e) {
-                alert("웹캠 오류: " + e.message); atReset();
-            } finally {
-                document.getElementById("at-loading").style.display = "none";
-            }
-        });
-
-        document.getElementById("at-capture-btn").addEventListener("click", async () => {
-            atWebcamRunning = false; atWebcam.stop();
-            await atAnalyze(atWebcam.canvas);
-        });
-
-        document.getElementById("at-stop-btn").addEventListener("click", atReset);
         document.getElementById("at-reset-btn").addEventListener("click", atReset);
     </script>
 </body>

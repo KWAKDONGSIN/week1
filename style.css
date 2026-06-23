@@ -295,12 +295,6 @@ header h1 {
     object-fit: cover;
 }
 
-#at-webcam-container canvas {
-    width: 100% !important;
-    height: auto !important;
-    border-radius: 12px;
-}
-
 .at-spinner {
     width: 32px;
     height: 32px;
